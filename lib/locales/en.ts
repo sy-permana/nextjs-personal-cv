@@ -1,0 +1,41 @@
+import { LocaleContent } from "@/types";
+
+export const en: LocaleContent = {
+  nav: {
+    about: "About",
+    experience: "Experience",
+    skills: "Skills",
+    certifications: "Certifications",
+    education: "Education",
+    contact: "Contact",
+  },
+  sections: {
+    about: "About Me",
+    professionalSummary: "Professional Summary",
+    technicalSkills: "Technical Skills & Core Competencies",
+    experience: "Professional Experience",
+    certifications: "Certifications & Professional Development",
+    education: "Education",
+    contact: "Get In Touch",
+  },
+  labels: {
+    location: "Location",
+    phone: "Phone",
+    email: "Email",
+    linkedin: "LinkedIn",
+    languages: "Languages",
+    frameworks: "Frameworks & Libraries",
+    architecture: "Architecture & Paradigms",
+    performance: "Performance & Optimization",
+    tools: "Developer Tools & Platforms",
+    fullstack: "Full-Stack Exposure",
+    professional: "Professional Skills",
+    present: "Present",
+    inProgress: "In Progress",
+    completed: "Completed",
+    expectedCompletion: "Expected Completion",
+    score: "Score",
+    graduatedWith: "Graduated with",
+    downloadCV: "Download CV",
+  },
+};

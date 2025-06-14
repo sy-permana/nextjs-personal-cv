@@ -1,0 +1,201 @@
+"use client";
+
+import { motion } from "framer-motion";
+import ScrollAnimation from "./ScrollAnimation";
+import { ProfessionalSummary, LocaleContent } from "@/types";
+
+interface AboutProps {
+  professionalSummary: ProfessionalSummary;
+  content: LocaleContent;
+}
+
+const About: React.FC<AboutProps> = ({ professionalSummary, content }) => {
+  const highlights = [
+    {
+      icon: (
+        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fillRule="evenodd"
+            d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+      title: "4+ Years Experience",
+      description:
+        "Proven expertise in building and scaling high-performance web applications",
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fillRule="evenodd"
+            d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+      title: "Performance Optimization",
+      description:
+        "Achieved 22% reduction in load times through strategic optimization",
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
+        </svg>
+      ),
+      title: "Technical Leadership",
+      description:
+        "Led complex migrations and improved developer productivity by 30%",
+    },
+    {
+      icon: (
+        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fillRule="evenodd"
+            d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clipRule="evenodd"
+          />
+        </svg>
+      ),
+      title: "Vue.js & Nuxt.js Expert",
+      description:
+        "Specialized in modern JavaScript frameworks and server-side rendering",
+    },
+  ];
+
+  return (
+    <section
+      id="about"
+      className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+    >
+      <ScrollAnimation className="space-y-12">
+        <div className="text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-navy-900 mb-4">
+            {content.sections.about}
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-navy-600 to-blue-500 mx-auto rounded-full mb-6"></div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Professional Summary */}
+          <ScrollAnimation delay={0.2}>
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold text-navy-900 mb-4">
+                {content.sections.professionalSummary}
+              </h3>
+              <div className="prose prose-lg text-gray-700 leading-relaxed">
+                <p className="text-lg">{professionalSummary.content}</p>
+              </div>
+
+              {/* Key Achievements */}
+              <div className="mt-8 space-y-3">
+                <h4 className="text-lg font-semibold text-navy-900">
+                  Key Achievements:
+                </h4>
+                <div className="space-y-2">
+                  {[
+                    "Spearheaded Nuxt 2 to Nuxt 3 migration for 9,000+ user application",
+                    "Achieved 22% reduction in application load times",
+                    "Improved developer productivity by 30% through reusable components",
+                    "Currently pursuing IBM Generative AI certification",
+                  ].map((achievement, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                      className="flex items-start space-x-3"
+                    >
+                      <div className="flex-shrink-0 w-5 h-5 bg-gradient-to-r from-navy-600 to-blue-500 rounded-full flex items-center justify-center mt-1">
+                        <svg
+                          className="w-3 h-3 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <span className="text-gray-700">{achievement}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </ScrollAnimation>
+
+          {/* Highlights Grid */}
+          <ScrollAnimation delay={0.4}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {highlights.map((highlight, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-navy-100 to-blue-100 rounded-lg mb-4 text-navy-600">
+                    {highlight.icon}
+                  </div>
+                  <h4 className="text-lg font-semibold text-navy-900 mb-2">
+                    {highlight.title}
+                  </h4>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {highlight.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </ScrollAnimation>
+        </div>
+
+        {/* Call to Action */}
+        <ScrollAnimation delay={0.6}>
+          <div className="text-center mt-12">
+            <div className="bg-gradient-to-r from-navy-50 to-blue-50 rounded-2xl p-8 border border-navy-100">
+              <h3 className="text-2xl font-bold text-navy-900 mb-4">
+                Ready to Build Something Amazing?
+              </h3>
+              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                I&apos;m passionate about creating high-performance web
+                applications that deliver exceptional user experiences.
+                Let&apos;s discuss how we can work together to bring your vision
+                to life.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  const contactSection = document.querySelector("#contact");
+                  if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-navy-600 hover:bg-navy-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
+              >
+                <svg
+                  className="w-5 h-5 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+                Get In Touch
+              </motion.button>
+            </div>
+          </div>
+        </ScrollAnimation>
+      </ScrollAnimation>
+    </section>
+  );
+};
+
+export default About;
