@@ -3,8 +3,17 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import { LocaleContent, Locale } from "@/types";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 interface NavigationProps {
   content: LocaleContent;
@@ -91,7 +100,7 @@ const Navigation: React.FC<NavigationProps> = ({ content, currentLocale }) => {
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200"
+          ? "bg-background/95 backdrop-blur-md shadow-lg border-b border-border"
           : "bg-transparent"
       }`}
     >
@@ -104,9 +113,10 @@ const Navigation: React.FC<NavigationProps> = ({ content, currentLocale }) => {
             transition={{ duration: 0.5 }}
             className="flex-shrink-0"
           >
-            <button
+            <Button
+              variant="ghost"
               onClick={scrollToTop}
-              className="flex items-center hover:opacity-80 transition-opacity"
+              className="flex items-center hover:bg-transparent p-0"
             >
               <Image
                 src="/logo.jpeg"
@@ -116,22 +126,26 @@ const Navigation: React.FC<NavigationProps> = ({ content, currentLocale }) => {
                 className="rounded object-cover"
                 priority
               />
-            </button>
+            </Button>
           </motion.div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">
             {navItems.map((item, index) => (
-              <motion.button
+              <motion.div
                 key={item.href}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                onClick={() => scrollToSection(item.href)}
-                className="text-gray-700 hover:text-navy-600 transition-colors font-medium"
               >
-                {item.label}
-              </motion.button>
+                <Button
+                  variant="ghost"
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-foreground hover:text-primary transition-colors font-medium"
+                >
+                  {item.label}
+                </Button>
+              </motion.div>
             ))}
 
             {/* Language Switcher */}
@@ -139,133 +153,132 @@ const Navigation: React.FC<NavigationProps> = ({ content, currentLocale }) => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.7 }}
-              className="flex items-center space-x-2 ml-4 pl-4 border-l border-gray-300"
+              className="flex items-center space-x-2 ml-4 pl-4 border-l border-border"
             >
-              <button
+              <Button
+                variant={currentLocale === "en" ? "default" : "outline"}
+                size="sm"
                 onClick={() => handleLanguageChange("en")}
-                className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                className={
                   currentLocale === "en"
-                    ? "bg-navy-600 text-white"
-                    : "text-gray-600 hover:text-navy-600"
-                }`}
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-primary"
+                }
               >
                 EN
-              </button>
-              <button
+              </Button>
+              <Button
+                variant={currentLocale === "id" ? "default" : "outline"}
+                size="sm"
                 onClick={() => handleLanguageChange("id")}
-                className={`px-2 py-1 rounded text-sm font-medium transition-colors ${
+                className={
                   currentLocale === "id"
-                    ? "bg-navy-600 text-white"
-                    : "text-gray-600 hover:text-navy-600"
-                }`}
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-primary"
+                }
               >
                 ID
-              </button>
+              </Button>
             </motion.div>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile menu */}
           <div className="lg:hidden">
-            <button
-              onClick={() => setIsMobileNavigationOpen(!isMobileNavigationOpen)}
-              className="text-gray-700 hover:text-navy-600 focus:outline-none focus:text-navy-600 transition-colors"
-              aria-label="Toggle menu"
+            <Sheet
+              open={isMobileNavigationOpen}
+              onOpenChange={setIsMobileNavigationOpen}
             >
-              <motion.div
-                animate={{ rotate: isMobileNavigationOpen ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {isMobileNavigationOpen ? (
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-foreground hover:text-primary focus:text-primary"
+                  aria-label="Toggle menu"
+                >
+                  <motion.div
+                    animate={{ rotate: isMobileNavigationOpen ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
-                )}
-              </motion.div>
-            </button>
-          </div>
-        </div>
+                    {isMobileNavigationOpen ? (
+                      <X className="h-6 w-6" />
+                    ) : (
+                      <Menu className="h-6 w-6" />
+                    )}
+                  </motion.div>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="text-left text-foreground">
+                    Navigation
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col space-y-4 mt-8">
+                  {navItems.map((item, index) => (
+                    <motion.div
+                      key={item.href}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                    >
+                      <Button
+                        variant="ghost"
+                        onClick={() => scrollToSection(item.href)}
+                        className="w-full justify-start text-foreground hover:text-primary hover:bg-accent font-medium text-base h-12"
+                      >
+                        {item.label}
+                      </Button>
+                    </motion.div>
+                  ))}
 
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isMobileNavigationOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 rounded-b-lg shadow-lg"
-            >
-              <div className="px-2 pt-2 pb-3 space-y-1">
-                {navItems.map((item, index) => (
-                  <motion.button
-                    key={item.href}
+                  {/* Mobile Language Switcher */}
+                  <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                    onClick={() => scrollToSection(item.href)}
-                    className="block w-full text-left px-3 py-2 text-gray-700 hover:text-navy-600 hover:bg-gray-50 rounded-md transition-colors font-medium"
+                    transition={{ duration: 0.3, delay: 0.6 }}
+                    className="pt-4 mt-4 border-t border-border"
                   >
-                    {item.label}
-                  </motion.button>
-                ))}
-
-                {/* Mobile Language Switcher */}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: 0.6 }}
-                  className="flex items-center space-x-2 px-3 py-2 mt-4 pt-4 border-t border-gray-200"
-                >
-                  <span className="text-sm text-gray-600 mr-2">Language:</span>
-                  <button
-                    onClick={() => handleLanguageChange("en")}
-                    className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                      currentLocale === "en"
-                        ? "bg-navy-600 text-white"
-                        : "text-gray-600 hover:text-navy-600 hover:bg-gray-100"
-                    }`}
-                  >
-                    English
-                  </button>
-                  <button
-                    onClick={() => handleLanguageChange("id")}
-                    className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
-                      currentLocale === "id"
-                        ? "bg-navy-600 text-white"
-                        : "text-gray-600 hover:text-navy-600 hover:bg-gray-100"
-                    }`}
-                  >
-                    Indonesia
-                  </button>
-                </motion.div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                    <div className="flex flex-col space-y-3">
+                      <span className="text-sm text-muted-foreground font-medium">
+                        Language:
+                      </span>
+                      <div className="flex space-x-2">
+                        <Button
+                          variant={
+                            currentLocale === "en" ? "default" : "outline"
+                          }
+                          size="sm"
+                          onClick={() => handleLanguageChange("en")}
+                          className={`flex-1 ${
+                            currentLocale === "en"
+                              ? "bg-primary text-primary-foreground"
+                              : "text-muted-foreground hover:text-primary hover:bg-accent"
+                          }`}
+                        >
+                          English
+                        </Button>
+                        <Button
+                          variant={
+                            currentLocale === "id" ? "default" : "outline"
+                          }
+                          size="sm"
+                          onClick={() => handleLanguageChange("id")}
+                          className={`flex-1 ${
+                            currentLocale === "id"
+                              ? "bg-primary text-primary-foreground"
+                              : "text-muted-foreground hover:text-primary hover:bg-accent"
+                          }`}
+                        >
+                          Indonesia
+                        </Button>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
       </div>
     </nav>
   );

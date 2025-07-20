@@ -1,0 +1,113 @@
+# AI Development Rules for Next.js CV Website
+
+## 🔄 Project Awareness & Context
+- **Always read `PLANNING.md`** at the start of a new conversation to understand the project's architecture, goals, design system, and technical constraints.
+- **Check `TASK.md`** before starting any new work. If the task isn't listed, add it with a brief description and today's date.
+- **Use consistent naming conventions, file structure, and architecture patterns** as described in `PLANNING.md`.
+- **Understand the current migration state**: We're transitioning from custom navy colors to Shadcn UI + OKLCH + TweakCN theme.
+
+## 🏗️ Architecture & Structure
+- **Never create a component file longer than 300 lines of code.** If approaching this limit, refactor by splitting into smaller components or custom hooks.
+- **Follow the established Next.js 15.3.3 hybrid architecture** (App Router + Pages Router).
+- **Organize components by feature**, not by technical type.
+- **Use consistent import patterns**:
+  - React/Next.js imports first
+  - Third-party libraries second
+  - Local components and utilities last
+  - Use relative imports for local files
+
+## 🎨 Design System & Styling
+- **Always use Shadcn UI components** when available instead of creating custom equivalents.
+- **Use semantic color classes** (background, foreground, primary, secondary, muted) instead of specific color values.
+- **Follow the TweakCN Navy theme** color system as defined in globals.css.
+- **Preserve all Framer Motion animations** - never remove existing animation functionality.
+- **Maintain responsive design** - test all changes across mobile, tablet, and desktop breakpoints.
+- **Use Tailwind CSS classes consistently** - avoid inline styles or custom CSS unless absolutely necessary.
+
+## 🧱 Component Development
+- **Preserve existing component APIs** - don't break props or callback interfaces without explicit instruction.
+- **Maintain accessibility standards** - all interactive elements must be keyboard navigable and screen reader friendly.
+- **Use TypeScript strictly** - provide proper types for all props, state, and function parameters.
+- **Follow Shadcn UI patterns** for component composition and variant handling.
+- **Test component behavior** after any changes - verify animations, interactions, and responsive behavior.
+
+## 🔧 Code Quality & Standards
+- **Use TypeScript 5 with strict mode** - no `any` types unless absolutely unavoidable.
+- **Follow Next.js 15.3.3 best practices** for performance and SEO.
+- **Use proper error handling** - wrap async operations in try/catch blocks.
+- **Write descriptive commit messages** following conventional commits format.
+- **Add JSDoc comments** for complex functions and component props:
+  ```typescript
+  /**
+   * Renders a navigation component with responsive mobile menu.
+   *
+   * @param content - Localized content for navigation items
+   * @param currentLocale - Current language locale
+   * @returns Navigation component with mobile/desktop responsive behavior
+   */
+  ```
+
+## 🎯 Migration-Specific Rules
+- **Map color classes systematically**:
+  - `navy-900` → `foreground`
+  - `navy-600` → `primary`
+  - `navy-50` → `secondary`
+  - `from-navy-600 to-blue-500` → `from-primary to-primary`
+- **Replace custom components with Shadcn equivalents** where beneficial:
+  - Custom buttons → `Button` component
+  - Custom cards → `Card` component
+  - Custom form inputs → `Input`, `Textarea`, `Form` components
+- **Preserve all existing functionality** - forms must still submit, animations must still work, responsive design must be maintained.
+- **Test OKLCH color rendering** across different browsers and devices.
+
+## ✅ Task Management
+- **Mark completed tasks in `TASK.md`** immediately after finishing them with completion date.
+- **Add new sub-tasks or issues discovered** during development to `TASK.md` under "Sub-tasks Discovered During Work".
+- **Update progress tracking** percentages when completing major milestones.
+- **Document any blockers or risks** encountered during implementation.
+
+## 🧪 Testing & Validation
+- **Test all changes across breakpoints**: mobile (375px), tablet (768px), desktop (1200px+).
+- **Verify dark/light mode functionality** if theme switching is implemented.
+- **Check browser compatibility**: Chrome, Firefox, Safari, Edge latest versions.
+- **Validate accessibility**: keyboard navigation, color contrast ratios (WCAG AA), screen reader compatibility.
+- **Performance check**: ensure no significant impact on Core Web Vitals or bundle size.
+
+## 📚 Documentation & Communication
+- **Update component documentation** when adding new props or changing behavior.
+- **Document color mapping decisions** when converting from navy-* classes.
+- **Explain complex logic** with inline comments focusing on "why" not just "what".
+- **Update README.md** when new dependencies are added or setup steps change.
+- **Create migration notes** for any breaking changes or special considerations.
+
+## 🚨 Error Handling & Recovery
+- **Never break existing functionality** - if uncertain about a change, ask for clarification.
+- **Provide fallbacks for OKLCH colors** to ensure older browser compatibility.
+- **Handle font loading gracefully** with appropriate fallbacks for Geist fonts.
+- **Preserve form submission logic** - ensure contact forms continue to work after migration.
+- **Maintain SEO metadata** - don't remove or break existing meta tags and structured data.
+
+## 🔍 AI Behavior Guidelines
+- **Never assume missing context** - ask questions if requirements are unclear.
+- **Never hallucinate dependencies** - only use verified packages that exist in package.json or are being explicitly added.
+- **Always verify file paths** before making changes - use file exploration to confirm structure.
+- **Never delete existing functionality** unless explicitly instructed or part of a documented task.
+- **Preserve user data and interactions** - don't break forms, navigation, or content accessibility.
+- **Test thoroughly before marking tasks complete** - verify the change works as intended.
+
+## 📋 Pre-Development Checklist
+Before starting any task:
+- [ ] Read PLANNING.md for current project state
+- [ ] Check TASK.md for task details and dependencies
+- [ ] Understand which components/files will be modified
+- [ ] Verify the task isn't blocked by dependencies
+- [ ] Confirm the expected outcome and acceptance criteria
+
+## 📋 Post-Development Checklist
+After completing any task:
+- [ ] Test the change across all breakpoints
+- [ ] Verify no TypeScript errors or warnings
+- [ ] Check that animations and interactions still work
+- [ ] Validate color contrast and accessibility
+- [ ] Update TASK.md with completion status
+- [ ] Document any issues or deviations discovered

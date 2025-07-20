@@ -3,6 +3,9 @@
 import { motion } from "framer-motion";
 import ScrollAnimation from "./ScrollAnimation";
 import { ProfessionalSummary, LocaleContent } from "@/types";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Mail } from "lucide-react";
 
 interface AboutProps {
   professionalSummary: ProfessionalSummary;
@@ -72,26 +75,26 @@ const About: React.FC<AboutProps> = ({ professionalSummary, content }) => {
     >
       <ScrollAnimation className="space-y-12">
         <div className="text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-navy-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             {content.sections.about}
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-navy-600 to-blue-500 mx-auto rounded-full mb-6"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-primary to-primary mx-auto rounded-full mb-6"></div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Professional Summary */}
           <ScrollAnimation delay={0.2}>
             <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-navy-900 mb-4">
+              <h3 className="text-2xl font-bold text-foreground mb-4">
                 {content.sections.professionalSummary}
               </h3>
-              <div className="prose prose-lg text-gray-700 leading-relaxed">
+              <div className="prose prose-lg text-muted-foreground leading-relaxed">
                 <p className="text-lg">{professionalSummary.content}</p>
               </div>
 
               {/* Key Achievements */}
               <div className="mt-8 space-y-3">
-                <h4 className="text-lg font-semibold text-navy-900">
+                <h4 className="text-lg font-semibold text-foreground">
                   Key Achievements:
                 </h4>
                 <div className="space-y-2">
@@ -108,9 +111,9 @@ const About: React.FC<AboutProps> = ({ professionalSummary, content }) => {
                       transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
                       className="flex items-start space-x-3"
                     >
-                      <div className="flex-shrink-0 w-5 h-5 bg-gradient-to-r from-navy-600 to-blue-500 rounded-full flex items-center justify-center mt-1">
+                      <div className="flex-shrink-0 w-5 h-5 bg-gradient-to-r from-primary to-primary rounded-full flex items-center justify-center mt-1">
                         <svg
-                          className="w-3 h-3 text-white"
+                          className="w-3 h-3 text-primary-foreground"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -121,7 +124,9 @@ const About: React.FC<AboutProps> = ({ professionalSummary, content }) => {
                           />
                         </svg>
                       </div>
-                      <span className="text-gray-700">{achievement}</span>
+                      <span className="text-muted-foreground">
+                        {achievement}
+                      </span>
                     </motion.div>
                   ))}
                 </div>
@@ -139,17 +144,20 @@ const About: React.FC<AboutProps> = ({ professionalSummary, content }) => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
                   whileHover={{ scale: 1.05, y: -5 }}
-                  className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 hover:shadow-xl transition-all duration-300"
                 >
-                  <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-navy-100 to-blue-100 rounded-lg mb-4 text-navy-600">
-                    {highlight.icon}
-                  </div>
-                  <h4 className="text-lg font-semibold text-navy-900 mb-2">
-                    {highlight.title}
-                  </h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {highlight.description}
-                  </p>
+                  <Card className="hover:shadow-xl transition-all duration-300 h-full">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-muted to-muted/50 rounded-lg mb-4 text-primary">
+                        {highlight.icon}
+                      </div>
+                      <CardTitle className="text-lg font-semibold text-foreground mb-2">
+                        {highlight.title}
+                      </CardTitle>
+                      <p className="text-muted-foreground text-sm leading-relaxed">
+                        {highlight.description}
+                      </p>
+                    </CardContent>
+                  </Card>
                 </motion.div>
               ))}
             </div>
@@ -159,38 +167,37 @@ const About: React.FC<AboutProps> = ({ professionalSummary, content }) => {
         {/* Call to Action */}
         <ScrollAnimation delay={0.6}>
           <div className="text-center mt-12">
-            <div className="bg-gradient-to-r from-navy-50 to-blue-50 rounded-2xl p-8 border border-navy-100">
-              <h3 className="text-2xl font-bold text-navy-900 mb-4">
-                Ready to Build Something Amazing?
-              </h3>
-              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                I&apos;m passionate about creating high-performance web
-                applications that deliver exceptional user experiences.
-                Let&apos;s discuss how we can work together to bring your vision
-                to life.
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  const contactSection = document.querySelector("#contact");
-                  if (contactSection) {
-                    contactSection.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-navy-600 hover:bg-navy-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
+            <Card className="bg-gradient-to-r from-muted/30 to-muted/20 border-border">
+              <CardContent className="p-8">
+                <h3 className="text-2xl font-bold text-foreground mb-4">
+                  Ready to Build Something Amazing?
+                </h3>
+                <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                  I&apos;m passionate about creating high-performance web
+                  applications that deliver exceptional user experiences.
+                  Let&apos;s discuss how we can work together to bring your
+                  vision to life.
+                </p>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
-                Get In Touch
-              </motion.button>
-            </div>
+                  <Button
+                    onClick={() => {
+                      const contactSection = document.querySelector("#contact");
+                      if (contactSection) {
+                        contactSection.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-200"
+                    size="lg"
+                  >
+                    <Mail className="w-5 h-5 mr-2" />
+                    Get In Touch
+                  </Button>
+                </motion.div>
+              </CardContent>
+            </Card>
           </div>
         </ScrollAnimation>
       </ScrollAnimation>
