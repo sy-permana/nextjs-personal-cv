@@ -6,7 +6,7 @@ Transform the current Next.js CV website from a custom navy-themed design to a m
 
 - **Shadcn UI components** for consistency and accessibility
 - **OKLCH color space** for better color accuracy and future-proofing
-- **TweakCN Navy theme** for automated setup and professional aesthetics
+- **Custom OKLCH theme** with improved color palette and professional aesthetics
 - **Geist typography** for modern, readable text rendering
 
 ### Success Definition
@@ -21,14 +21,14 @@ A visually consistent, accessible, and maintainable CV website that preserves al
 Next.js 15.3.3 (Hybrid App + Pages Router)
 ├── App Router (/app)
 │   ├── layout.tsx (root layout)
-│   └── globals.css (Tailwind + custom navy colors)
+│   └── globals.css (Tailwind + legacy navy colors)
 ├── Pages Router (/pages)
 │   ├── index.tsx (main CV page)
 │   └── _app.tsx
 ├── Components (/components)
 │   ├── 8 custom React components
 │   └── Framer Motion animations
-└── Custom Navy Color System (HEX-based)
+└── Legacy Navy Color System (HEX-based)
 ```
 
 ### Target Architecture
@@ -37,7 +37,7 @@ Next.js 15.3.3 (Hybrid App + Pages Router)
 Next.js 15.3.3 (Hybrid App + Pages Router)
 ├── App Router (/app)
 │   ├── layout.tsx (Geist fonts)
-│   └── globals.css (TweakCN theme + OKLCH)
+│   └── globals.css (Custom OKLCH theme)
 ├── Pages Router (/pages)
 │   ├── index.tsx (updated components)
 │   └── _app.tsx
@@ -45,7 +45,7 @@ Next.js 15.3.3 (Hybrid App + Pages Router)
 │   ├── /ui (Shadcn components)
 │   ├── 8 migrated components
 │   └── Preserved Framer Motion
-└── Semantic Color System (OKLCH-based)
+└── Pure OKLCH Semantic Color System
 ```
 
 ## 🛠️ Technology Stack
@@ -61,8 +61,8 @@ Next.js 15.3.3 (Hybrid App + Pages Router)
 ### New Additions
 
 - **UI Components**: Shadcn UI
-- **Theme System**: TweakCN Navy theme
-- **Color Space**: OKLCH
+- **Theme System**: Custom OKLCH theme with improved color palette
+- **Color Space**: Pure OKLCH for all colors
 - **Typography**: Geist (sans, serif, mono), Lora
 - **Utilities**: class-variance-authority, clsx, tailwind-merge
 
@@ -81,10 +81,11 @@ Next.js 15.3.3 (Hybrid App + Pages Router)
 
 ### Color Philosophy
 
-- **Semantic naming**: Replace navy-\* with background/foreground/primary/secondary
+- **Pure OKLCH**: Complete removal of legacy HEX navy colors for improved color science
+- **Semantic naming**: Clean semantic tokens (background/foreground/primary/secondary)
 - **OKLCH benefits**: Better perceptual uniformity, wider gamut, future browser support
-- **Accessibility first**: WCAG AA contrast ratios maintained
-- **Dark mode native**: Built-in light/dark theme support
+- **Accessibility first**: WCAG AA contrast ratios maintained with improved precision
+- **Dark mode native**: Enhanced light/dark theme support with better contrast ratios
 
 ### Component Strategy
 
@@ -115,15 +116,15 @@ Next.js 15.3.3 (Hybrid App + Pages Router)
 - **Browser support**: OKLCH requires modern browsers (fallbacks needed)
 - **Bundle size**: Monitor impact of new dependencies
 - **Performance**: Maintain existing Lighthouse scores
-- **Migration scope**: 8 components, ~50+ color class instances
+- **Migration scope**: 8 components, legacy color cleanup, improved OKLCH implementation
 
 ## 🔄 Migration Strategy
 
-### Phase 1: Foundation (Automated Setup)
+### Phase 1: Foundation (Color System Upgrade)
 
-**Goal**: Establish theme and component infrastructure
-**Key Tool**: TweakCN registry URL installation
-**Risk Level**: Low (automated process)
+**Goal**: Establish improved OKLCH theme and remove legacy colors
+**Key Tool**: Custom OKLCH color system implementation and legacy color cleanup
+**Risk Level**: Low (systematic color replacement)
 
 ### Phase 2: Component Migration (Manual Updates)
 
@@ -210,14 +211,15 @@ Next.js 15.3.3 (Hybrid App + Pages Router)
 
 ### Critical Path Dependencies
 
-1. TweakCN theme installation success
-2. Shadcn UI component compatibility
+1. Legacy navy color removal and OKLCH upgrade success
+2. Shadcn UI component compatibility with new color system
 3. Framer Motion integration preservation
 4. OKLCH browser support validation
 
 ### Risk Mitigation Timeline
 
 - **Buffer time**: 20% additional time allocated for unexpected issues
+- **Color validation**: Thorough testing of new OKLCH color system
 - **Checkpoint reviews**: End-of-phase validation before proceeding
 - **Rollback windows**: Ability to revert at any phase boundary
 - **Testing cycles**: Dedicated QA time built into each phase
