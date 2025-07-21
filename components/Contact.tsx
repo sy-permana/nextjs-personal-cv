@@ -1,15 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { PersonalInfo, LocaleContent } from "@/types";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -19,18 +17,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Mail, Phone, MapPin, Linkedin } from "lucide-react";
+import { CVData, LocaleContent } from "@/types";
 
 interface ContactProps {
-  personalInfo: PersonalInfo;
+  personalInfo: CVData["personalInfo"];
   content: LocaleContent;
 }
 
 // Form validation schema
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
+  email: z.email("Please enter a valid email address"),
   subject: z.string().min(5, "Subject must be at least 5 characters"),
   message: z.string().min(10, "Message must be at least 10 characters"),
+  honeypot: z.string().optional(), // Honeypot field for bot detection
 });
 
 type ContactFormData = z.infer<typeof contactFormSchema>;
@@ -40,6 +41,19 @@ const Contact: React.FC<ContactProps> = ({ personalInfo, content }) => {
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const [submitMessage, setSubmitMessage] = useState<string>("");
+  const [formStartTime, setFormStartTime] = useState<number>(0);
+  const [honeypotFieldName, setHoneypotFieldName] = useState<string>("website");
+
+  // Set form start time when component mounts
+  useEffect(() => {
+    setFormStartTime(Date.now());
+    // Generate random honeypot field name
+    const fieldNames = ["website", "url", "homepage", "link", "company_url"];
+    setHoneypotFieldName(
+      fieldNames[Math.floor(Math.random() * fieldNames.length)],
+    );
+  }, []);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -48,73 +62,78 @@ const Contact: React.FC<ContactProps> = ({ personalInfo, content }) => {
       email: "",
       subject: "",
       message: "",
+      honeypot: "",
     },
   });
 
   const handleSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
+    setSubmitMessage("");
 
-    // Simulate form submission
     try {
-      // Log the form data (in a real app, this would be sent to an API)
-      console.log("Form data:", data);
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      setSubmitStatus("success");
-      form.reset();
-    } catch {
+      // Add timing and honeypot data
+      const submissionData = {
+        ...data,
+        formStartTime,
+        honeypotFieldName,
+      };
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setSubmitStatus("success");
+        setSubmitMessage(result.message);
+        form.reset();
+      } else {
+        setSubmitStatus("error");
+        setSubmitMessage(
+          result.message || "Failed to send message. Please try again.",
+        );
+      }
+    } catch (error) {
       setSubmitStatus("error");
+      setSubmitMessage(
+        "Network error. Please check your connection and try again.",
+      );
+      console.error("Contact form error:", error);
     } finally {
       setIsSubmitting(false);
-      setTimeout(() => setSubmitStatus("idle"), 5000);
+      setTimeout(() => {
+        setSubmitStatus("idle");
+        setSubmitMessage("");
+      }, 5000);
     }
   };
 
   const contactMethods = [
     {
-      icon: (
-        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-          <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-        </svg>
-      ),
+      icon: <Mail className="w-6 h-6" />,
       label: content.labels.email,
       value: personalInfo.email,
       href: `mailto:${personalInfo.email}`,
     },
     {
-      icon: (
-        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-        </svg>
-      ),
+      icon: <Phone className="w-6 h-6" />,
       label: content.labels.phone,
       value: personalInfo.phone,
       href: `tel:${personalInfo.phone}`,
     },
     {
-      icon: (
-        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fillRule="evenodd"
-            d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
+      icon: <Linkedin className="w-6 h-6" />,
       label: content.labels.linkedin,
       value: personalInfo.linkedin,
       href: `https://${personalInfo.linkedin}`,
     },
     {
-      icon: (
-        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fillRule="evenodd"
-            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-            clipRule="evenodd"
-          />
-        </svg>
-      ),
+      icon: <MapPin className="w-6 h-6" />,
       label: content.labels.location,
       value: personalInfo.location,
       href: "#",
@@ -321,6 +340,25 @@ const Contact: React.FC<ContactProps> = ({ personalInfo, content }) => {
                       )}
                     />
 
+                    {/* Honeypot field - hidden from users, catches bots */}
+                    <FormField
+                      control={form.control}
+                      name="honeypot"
+                      render={({ field }) => (
+                        <FormItem className="hidden">
+                          <FormLabel>{honeypotFieldName}</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder=""
+                              tabIndex={-1}
+                              autoComplete="off"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+
                     {/* Submit Button */}
                     <Button
                       type="submit"
@@ -369,8 +407,8 @@ const Contact: React.FC<ContactProps> = ({ personalInfo, content }) => {
                               Message Sent!
                             </div>
                             <div className="text-green-600 dark:text-green-300 text-sm">
-                              Thank you for reaching out. I&apos;ll get back to
-                              you soon.
+                              {submitMessage ||
+                                "Thank you for reaching out. I'll get back to you soon."}
                             </div>
                           </CardContent>
                         </Card>
@@ -388,7 +426,8 @@ const Contact: React.FC<ContactProps> = ({ personalInfo, content }) => {
                               Error
                             </div>
                             <div className="text-red-600 dark:text-red-300 text-sm">
-                              Something went wrong. Please try again later.
+                              {submitMessage ||
+                                "Something went wrong. Please try again later."}
                             </div>
                           </CardContent>
                         </Card>
