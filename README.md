@@ -36,7 +36,7 @@ A modern, professional CV website built with Next.js, TypeScript, shadcn/ui, and
 - **Email Service**: Resend for contact form functionality
 - **Form Handling**: React Hook Form with Zod validation
 - **Security**: Custom rate limiting and spam protection
-- **Package Manager**: npm
+- **Package Manager**: bun
 
 ## 📁 Project Structure
 
@@ -150,19 +150,19 @@ Language switching is available in the navigation bar, and the content is fully 
 2. **Install dependencies**
 
    ```bash
-   npm install
+   bun install
    ```
 
 3. **Run development server**
 
    ```bash
-   npm run dev
+   bun dev
    ```
 
 4. **Build for production**
    ```bash
-   npm run build
-   npm run start
+   bun run build
+   bun start
    ```
 
 ## 📝 Customization
@@ -244,22 +244,22 @@ CONTACT_FROM_EMAIL=noreply@yourdomain.com
 
 ```bash
 # Development server
-npm run dev
+bun dev
 
 # Production build
-npm run build
+bun run build
 
 # Start production server
-npm run start
+bun start
 
 # Lint code
-npm run lint
+bun run lint
 
 # Type checking
-npx tsc --noEmit
+bunx tsc --noEmit
 
 # Component development (shadcn/ui)
-npx shadcn@latest add [component-name]
+bunx shadcn@latest add [component-name]
 ```
 
 ## 🛡️ Security Features
