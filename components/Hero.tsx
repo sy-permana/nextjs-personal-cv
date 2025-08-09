@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { MapPin, Phone, Mail, Linkedin, ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { PersonalInfo, LocaleContent } from "@/types";
 
 interface HeroProps {
@@ -45,7 +47,7 @@ const Hero: React.FC<HeroProps> = ({ personalInfo, content }) => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 pt-20">
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/50 to-muted pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <motion.div
           variants={containerVariants}
@@ -56,52 +58,36 @@ const Hero: React.FC<HeroProps> = ({ personalInfo, content }) => {
           {/* Content Side */}
           <div className="text-center lg:text-left space-y-8">
             <motion.div variants={itemVariants} className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-navy-900 leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
                 <span className="block">
                   {personalInfo.name.split(" ").slice(0, 2).join(" ")}
                 </span>
-                <span className="block text-3xl sm:text-4xl lg:text-5xl text-navy-700 mt-2">
+                <span className="block text-3xl sm:text-4xl lg:text-5xl text-muted-foreground mt-2">
                   {personalInfo.name.split(" ").slice(2).join(" ")}
                 </span>
               </h1>
-              <div className="w-24 h-1 bg-gradient-to-r from-navy-600 to-blue-500 mx-auto lg:mx-0 rounded-full"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-primary mx-auto lg:mx-0 rounded-full"></div>
             </motion.div>
 
             <motion.p
               variants={itemVariants}
-              className="text-xl sm:text-2xl text-navy-700 font-medium"
+              className="text-xl sm:text-2xl text-muted-foreground font-medium"
             >
               {personalInfo.title}
             </motion.p>
 
             <motion.div
               variants={itemVariants}
-              className="flex flex-wrap justify-center lg:justify-start gap-6 text-gray-600"
+              className="flex flex-wrap justify-center lg:justify-start gap-6 text-muted-foreground"
             >
               <div className="flex items-center space-x-2">
-                <svg
-                  className="w-5 h-5 text-navy-600"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <MapPin className="w-5 h-5 text-primary" />
                 <span className="text-sm sm:text-base">
                   {personalInfo.location}
                 </span>
               </div>
               <div className="flex items-center space-x-2">
-                <svg
-                  className="w-5 h-5 text-navy-600"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                </svg>
+                <Phone className="w-5 h-5 text-primary" />
                 <span className="text-sm sm:text-base">
                   {personalInfo.phone}
                 </span>
@@ -112,39 +98,31 @@ const Hero: React.FC<HeroProps> = ({ personalInfo, content }) => {
               variants={itemVariants}
               className="flex flex-wrap justify-center lg:justify-start gap-4"
             >
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-navy-600 hover:bg-navy-700 transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+              <Button
+                asChild
+                size="lg"
+                className="shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
               >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                </svg>
-                {content.nav.contact}
-              </a>
-              <a
-                href={`https://${personalInfo.linkedin}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 border-2 border-navy-600 text-base font-medium rounded-lg text-navy-600 bg-transparent hover:bg-navy-600 hover:text-white transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                <a href={`mailto:${personalInfo.email}`}>
+                  <Mail className="w-5 h-5 mr-2" />
+                  {content.nav.contact}
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
               >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
+                <a
+                  href={`https://${personalInfo.linkedin}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                LinkedIn
-              </a>
+                  <Linkedin className="w-5 h-5 mr-2" />
+                  LinkedIn
+                </a>
+              </Button>
             </motion.div>
           </div>
 
@@ -155,14 +133,14 @@ const Hero: React.FC<HeroProps> = ({ personalInfo, content }) => {
           >
             <div className="relative">
               {/* Decorative Background Elements */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-navy-600/20 to-blue-500/20 rounded-2xl transform rotate-6"></div>
-              <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/30 to-indigo-500/30 rounded-2xl transform -rotate-3"></div>
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/20 rounded-2xl transform rotate-6"></div>
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary/30 to-primary/30 rounded-2xl transform -rotate-3"></div>
 
               {/* Image Container */}
               <div className="relative w-80 h-80 sm:w-96 sm:h-96 lg:w-[28rem] lg:h-[28rem]">
-                <div className="w-full h-full bg-gradient-to-br from-navy-100 to-blue-100 rounded-2xl shadow-2xl overflow-hidden border-4 border-white">
+                <div className="w-full h-full bg-gradient-to-br from-muted to-muted/80 rounded-2xl shadow-2xl overflow-hidden border-4 border-background">
                   {/* Elegant placeholder with professional pattern */}
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-navy-50 via-blue-50 to-indigo-50 relative">
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-background via-muted/50 to-muted relative">
                     {/* Pattern overlay */}
                     <div className="absolute inset-0 opacity-10">
                       <svg
@@ -190,13 +168,13 @@ const Hero: React.FC<HeroProps> = ({ personalInfo, content }) => {
                           width="100%"
                           height="100%"
                           fill="url(#grid)"
-                          className="text-navy-600"
+                          className="text-primary"
                         />
                       </svg>
                     </div>
 
                     {/* Professional icon */}
-                    <div className="relative z-10 flex flex-col items-center justify-center text-navy-300">
+                    <div className="relative z-10 flex flex-col items-center justify-center text-muted-foreground/60">
                       <svg
                         className="w-32 h-32 mb-4"
                         fill="currentColor"
@@ -208,10 +186,10 @@ const Hero: React.FC<HeroProps> = ({ personalInfo, content }) => {
                           clipRule="evenodd"
                         />
                       </svg>
-                      <p className="text-navy-400 font-medium text-lg">
+                      <p className="text-muted-foreground font-medium text-lg">
                         Professional Photo
                       </p>
-                      <p className="text-navy-300 text-sm mt-1">
+                      <p className="text-muted-foreground/80 text-sm mt-1">
                         Replace with your image
                       </p>
                     </div>
@@ -232,22 +210,10 @@ const Hero: React.FC<HeroProps> = ({ personalInfo, content }) => {
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="flex flex-col items-center space-y-2 text-navy-400"
+            className="flex flex-col items-center space-y-2 text-muted-foreground"
           >
             <span className="text-sm font-medium">Scroll Down</span>
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </svg>
+            <ChevronDown className="w-6 h-6" />
           </motion.div>
         </motion.div>
       </div>
