@@ -132,4 +132,23 @@ export const cvData: CVData = {
         "Core curriculum included fundamental web development principles with PHP, HTML, CSS, and MySQL.",
     },
   ],
+  projects: [
+    {
+      title: "Mekari Flex Dashboard",
+      description: "A mission-critical SPA serving 9,000+ administrators. Migrated from Nuxt 2 to Nuxt 3, improving performance by 22%.",
+      technologies: ["Vue.js", "Nuxt 3", "TypeScript", "Tailwind CSS"],
+      demoUrl: "https://mekari.com/flex",
+    },
+    {
+      title: "E-Commerce Platform",
+      description: "Full-stack e-commerce solution with real-time inventory management and secure payment gateway integration.",
+      technologies: ["React", "Node.js", "MongoDB", "Redux"],
+      repoUrl: "https://github.com/sy-permana",
+    },
+    {
+      title: "Logistics Tracker",
+      description: "Internal tool for tracking shipment schedules and optimizing delivery routes.",
+      technologies: ["Vue.js", "Firebase", "Google Maps API"],
+    },
+  ],
 };

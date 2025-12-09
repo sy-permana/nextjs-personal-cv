@@ -52,6 +52,15 @@ export interface Education {
   description?: string;
 }
 
+export interface Project {
+  title: string;
+  description: string;
+  technologies: string[];
+  imageUrl?: string;
+  demoUrl?: string;
+  repoUrl?: string;
+}
+
 // Main CV Data Structure
 export interface CVData {
   personalInfo: PersonalInfo;
@@ -60,6 +69,7 @@ export interface CVData {
   experience: Experience[];
   certifications: Certification[];
   education: Education[];
+  projects: Project[];
 }
 
 // Animation Types
@@ -101,6 +111,7 @@ export interface LocaleContent {
     about: string;
     experience: string;
     skills: string;
+    projects: string;
     certifications: string;
     education: string;
     contact: string;
@@ -110,6 +121,7 @@ export interface LocaleContent {
     professionalSummary: string;
     technicalSkills: string;
     experience: string;
+    projects: string;
     certifications: string;
     education: string;
     contact: string;

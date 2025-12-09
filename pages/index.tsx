@@ -6,6 +6,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
+import Projects from "@/components/Projects";
 import Certifications from "@/components/Certifications";
 import Education from "@/components/Education";
 import Contact from "@/components/Contact";
@@ -115,6 +116,17 @@ export default function Home({ cvData, content, locale }: HomeProps) {
           viewport={{ once: true }}
         >
           <Skills technicalSkills={cvData.technicalSkills} content={content} />
+        </motion.div>
+
+        {/* Projects Section */}
+        <motion.div
+          id="projects"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <Projects projects={cvData.projects} content={content} />
         </motion.div>
 
         {/* Certifications Section */}
