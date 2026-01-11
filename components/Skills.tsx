@@ -1,182 +1,125 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TechnicalSkills, LocaleContent } from "@/types";
+import { Code2, Database, Layout, Server, Settings, Terminal, Zap } from "lucide-react";
 
 interface SkillsProps {
   technicalSkills: TechnicalSkills;
   content: LocaleContent;
 }
 
-interface SkillCategoryProps {
-  title: string;
-  skills: string[];
-  delay?: number;
-}
-
-const SkillCategory: React.FC<SkillCategoryProps> = ({
-  title,
-  skills,
-  delay = 0,
-}) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay }}
-      viewport={{ once: true }}
-      className="h-full"
-    >
-      <Card className="h-full hover:shadow-xl transition-shadow duration-300 border-muted">
-        <CardHeader className="pb-4">
-          <h3 className="text-xl font-bold text-foreground flex items-center">
-            <span className="w-2 h-2 bg-gradient-to-r from-primary to-primary rounded-full mr-3"></span>
-            {title}
-          </h3>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {skills.map((skill, index) => (
-              <motion.div
-                key={skill}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: delay + index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <Badge
-                  variant="secondary"
-                  className="bg-gradient-to-r from-muted to-muted/80 text-muted-foreground border border-border hover:border-primary/30 transition-colors duration-200"
-                >
-                  {skill}
-                </Badge>
-              </motion.div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </motion.div>
-  );
-};
-
 const Skills: React.FC<SkillsProps> = ({ technicalSkills, content }) => {
-  const skillCategories = [
+  const categories = [
     {
+      key: "languages",
       title: content.labels.languages,
       skills: technicalSkills.languages,
+      icon: Code2,
+      color: "text-blue-500",
     },
     {
+      key: "frameworks",
       title: content.labels.frameworks,
       skills: technicalSkills.frameworks,
+      icon: Layout,
+      color: "text-green-500",
     },
     {
-      title: content.labels.architecture,
-      skills: technicalSkills.architecture,
-    },
-    {
-      title: content.labels.performance,
-      skills: technicalSkills.performance,
-    },
-    {
-      title: content.labels.tools,
-      skills: technicalSkills.tools,
-    },
-    {
+      key: "fullstack",
       title: content.labels.fullstack,
       skills: technicalSkills.fullstack,
+      icon: Server,
+      color: "text-purple-500",
     },
     {
+      key: "architecture",
+      title: content.labels.architecture,
+      skills: technicalSkills.architecture,
+      icon: Database,
+      color: "text-orange-500",
+    },
+    {
+      key: "performance",
+      title: content.labels.performance,
+      skills: technicalSkills.performance,
+      icon: Zap,
+      color: "text-yellow-500",
+    },
+    {
+      key: "tools",
+      title: content.labels.tools,
+      skills: technicalSkills.tools,
+      icon: Terminal,
+      color: "text-cyan-500",
+    },
+     {
+      key: "professional",
       title: content.labels.professional,
       skills: technicalSkills.professional,
+      icon: Settings,
+      color: "text-pink-500",
     },
   ];
 
   return (
-    <section
-      id="skills"
-      className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-background via-muted/50 to-muted"
-    >
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
+    <section className="py-24 bg-muted/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16 space-y-4"
         >
-          <h2 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-foreground">
             {content.sections.technicalSkills}
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary to-primary mx-auto rounded-full mb-6"></div>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            A comprehensive toolkit of technologies, frameworks, and
-            methodologies that enable me to build robust, scalable, and
-            performant web applications.
-          </p>
+           <div className="h-1 w-24 bg-gradient-to-r from-primary to-indigo-600 mx-auto rounded-full" />
         </motion.div>
 
-        {/* Skills Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skillCategories.map((category, index) => (
-            <SkillCategory
-              key={category.title}
-              title={category.title}
-              skills={category.skills}
-              delay={index * 0.1}
-            />
-          ))}
+          {categories.map((category, index) => {
+            const Icon = category.icon;
+            return (
+              <motion.div
+                key={category.key}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card className="h-full bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-lg bg-background border border-border ${category.color}`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <CardTitle className="text-lg font-semibold text-foreground">
+                        {category.title}
+                      </CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {category.skills.map((skill, skillIndex) => (
+                        <Badge
+                          key={skillIndex}
+                          variant="secondary"
+                          className="px-2.5 py-1 text-xs font-medium bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors border-transparent"
+                        >
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
         </div>
-
-        {/* Skills Highlight */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          viewport={{ once: true }}
-          className="mt-16"
-        >
-          <Card className="border-muted">
-            <CardContent className="p-8 text-center">
-              <h3 className="text-2xl font-bold text-foreground mb-4">
-                Core Expertise
-              </h3>
-              <p className="text-muted-foreground mb-6 max-w-4xl mx-auto">
-                With 10+ years of professional experience spanning logistics
-                administration and software engineering, I bring a unique blend
-                of operational efficiency and technical innovation. Specializing
-                in the Vue.js ecosystem, particularly Nuxt.js, while maintaining
-                full-stack capabilities. My diverse background enables me to
-                approach technical challenges with strong process optimization
-                skills and attention to detail gained from logistics experience.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                {[
-                  "Vue.js",
-                  "Nuxt.js",
-                  "TypeScript",
-                  "Process Optimization",
-                  "Technical Leadership",
-                  "Problem Solving",
-                ].map((skill, index) => (
-                  <motion.div
-                    key={skill}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: 0.9 + index * 0.1 }}
-                    viewport={{ once: true }}
-                  >
-                    <Badge className="bg-gradient-to-r from-primary to-primary text-primary-foreground px-6 py-3 text-base font-semibold shadow-lg hover:shadow-xl transition-shadow duration-300">
-                      {skill}
-                    </Badge>
-                  </motion.div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
       </div>
     </section>
   );

@@ -1,19 +1,12 @@
 "use client";
 
+import { motion, useScroll, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import { LocaleContent, Locale } from "@/types";
+import { Menu, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { LocaleContent, Locale } from "@/types";
+import { useRouter } from "next/router";
 
 interface NavigationProps {
   content: LocaleContent;
@@ -21,266 +14,121 @@ interface NavigationProps {
 }
 
 const Navigation: React.FC<NavigationProps> = ({ content, currentLocale }) => {
-  const [isMobileNavigationOpen, setIsMobileNavigationOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      setScrolled(isScrolled);
+      setIsScrolled(window.scrollY > 50);
     };
-
-    const handleResize = () => {
-      const isMobile = window.innerWidth < 1024; // lg breakpoint
-
-      // Close mobile menu if switching to desktop
-      if (!isMobile && isMobileNavigationOpen) {
-        setIsMobileNavigationOpen(false);
-      }
-    };
-
-    // Initial check
-    handleResize();
-
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [isMobileNavigationOpen]);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navItems = [
-    { href: "#about", label: content.nav.about },
-    { href: "#experience", label: content.nav.experience },
-    { href: "#skills", label: content.nav.skills },
-    { href: "#certifications", label: content.nav.certifications },
-    { href: "#education", label: content.nav.education },
-    { href: "#contact", label: content.nav.contact },
+    { name: content.nav.about, href: "#about" },
+    { name: content.nav.experience, href: "#experience" },
+    { name: content.nav.skills, href: "#skills" },
+    { name: content.nav.projects, href: "#projects" }, // Added projects
+    { name: content.nav.certifications, href: "#certifications" },
+    { name: content.nav.education, href: "#education" },
+    { name: content.nav.contact, href: "#contact" },
   ];
 
-  const handleLanguageChange = (newLocale: Locale) => {
-    const { pathname, asPath, query } = router;
-    router.push({ pathname, query }, asPath, { locale: newLocale });
-  };
-
-  const scrollToSection = (href: string) => {
-    setIsMobileNavigationOpen(false);
-
-    setTimeout(() => {
-      const element = document.querySelector(href);
-      if (element) {
-        const headerOffset = 80; // Account for fixed header
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition =
-          elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
-      }
-    }, 100);
-  };
-
-  const scrollToTop = () => {
-    setIsMobileNavigationOpen(false);
-
-    setTimeout(() => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }, 100);
+  const switchLocale = () => {
+    const newLocale = currentLocale === "en" ? "id" : "en";
+    router.push(router.pathname, router.asPath, { locale: newLocale });
   };
 
   return (
-    <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/95 backdrop-blur-md shadow-lg border-b border-border"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex-shrink-0"
-          >
-            <Button
-              variant="ghost"
-              onClick={scrollToTop}
-              className="flex items-center hover:bg-transparent p-0"
-            >
-              <Image
-                src="/logo.jpeg"
-                alt="Surya Permana Logo"
-                width={40}
-                height={40}
-                className="rounded object-cover"
-                priority
-              />
-            </Button>
-          </motion.div>
+    <>
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-primary origin-left z-50"
+        style={{ scaleX }}
+      />
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+          isScrolled
+            ? "bg-background/80 backdrop-blur-md border-b border-border/40 shadow-sm py-4"
+            : "bg-transparent py-6"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center">
+            <a href="#" className="text-2xl font-bold font-serif tracking-tight">
+              SP<span className="text-primary">.</span>
+            </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {navItems.map((item, index) => (
-              <motion.div
-                key={item.href}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Button
-                  variant="ghost"
-                  onClick={() => scrollToSection(item.href)}
-                  className="text-foreground hover:text-primary transition-colors font-medium"
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-1">
+              {navItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-full transition-all duration-200"
                 >
-                  {item.label}
-                </Button>
-              </motion.div>
-            ))}
+                  {item.name}
+                </a>
+              ))}
 
-            {/* Language Switcher */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.7 }}
-              className="flex items-center space-x-2 ml-4 pl-4 border-l border-border"
-            >
-              <Button
-                variant={currentLocale === "en" ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleLanguageChange("en")}
-                className={
-                  currentLocale === "en"
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-primary"
-                }
-              >
-                EN
-              </Button>
-              <Button
-                variant={currentLocale === "id" ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleLanguageChange("id")}
-                className={
-                  currentLocale === "id"
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-primary"
-                }
-              >
-                ID
-              </Button>
-            </motion.div>
-          </div>
+              <div className="h-4 w-px bg-border mx-2" />
 
-          {/* Mobile menu */}
-          <div className="lg:hidden">
-            <Sheet
-              open={isMobileNavigationOpen}
-              onOpenChange={setIsMobileNavigationOpen}
-            >
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-foreground hover:text-primary focus:text-primary"
-                  aria-label="Toggle menu"
-                >
-                  <motion.div
-                    animate={{ rotate: isMobileNavigationOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {isMobileNavigationOpen ? (
-                      <X className="h-6 w-6" />
-                    ) : (
-                      <Menu className="h-6 w-6" />
-                    )}
-                  </motion.div>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
-                <SheetHeader>
-                  <SheetTitle className="text-left text-foreground">
-                    Navigation
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col space-y-4 mt-8">
-                  {navItems.map((item, index) => (
-                    <motion.div
-                      key={item.href}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.1 }}
-                    >
-                      <Button
-                        variant="ghost"
-                        onClick={() => scrollToSection(item.href)}
-                        className="w-full justify-start text-foreground hover:text-primary hover:bg-accent font-medium text-base h-12"
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={switchLocale}
+                className="ml-2 font-mono text-xs hover:bg-primary/10 hover:text-primary"
+              >
+                <Globe className="w-3 h-3 mr-2" />
+                {currentLocale === "en" ? "ID" : "EN"}
+              </Button>
+            </div>
+
+            {/* Mobile Navigation */}
+            <div className="md:hidden flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={switchLocale}
+                className="font-mono text-xs"
+              >
+                {currentLocale === "en" ? "ID" : "EN"}
+              </Button>
+
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="w-6 h-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="w-[300px] border-l border-border bg-background/95 backdrop-blur-xl">
+                   <div className="flex flex-col gap-6 mt-10">
+                    {navItems.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className="text-lg font-medium text-foreground/80 hover:text-primary transition-colors"
                       >
-                        {item.label}
-                      </Button>
-                    </motion.div>
-                  ))}
-
-                  {/* Mobile Language Switcher */}
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: 0.6 }}
-                    className="pt-4 mt-4 border-t border-border"
-                  >
-                    <div className="flex flex-col space-y-3">
-                      <span className="text-sm text-muted-foreground font-medium">
-                        Language:
-                      </span>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant={
-                            currentLocale === "en" ? "default" : "outline"
-                          }
-                          size="sm"
-                          onClick={() => handleLanguageChange("en")}
-                          className={`flex-1 ${
-                            currentLocale === "en"
-                              ? "bg-primary text-primary-foreground"
-                              : "text-muted-foreground hover:text-primary hover:bg-accent"
-                          }`}
-                        >
-                          English
-                        </Button>
-                        <Button
-                          variant={
-                            currentLocale === "id" ? "default" : "outline"
-                          }
-                          size="sm"
-                          onClick={() => handleLanguageChange("id")}
-                          className={`flex-1 ${
-                            currentLocale === "id"
-                              ? "bg-primary text-primary-foreground"
-                              : "text-muted-foreground hover:text-primary hover:bg-accent"
-                          }`}
-                        >
-                          Indonesia
-                        </Button>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                        {item.name}
+                      </a>
+                    ))}
+                   </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </motion.nav>
+    </>
   );
 };
 

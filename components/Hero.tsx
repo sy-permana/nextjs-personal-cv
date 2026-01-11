@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, Linkedin, ChevronDown } from "lucide-react";
+import { Mail, Linkedin, ChevronDown, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PersonalInfo, LocaleContent } from "@/types";
 
@@ -11,214 +11,168 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ personalInfo, content }) => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.6, -0.05, 0.01, 0.99] as const,
-      },
-    },
-  };
-
-  const imageVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: [0.6, -0.05, 0.01, 0.99] as const,
-      },
-    },
-  };
-
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/50 to-muted pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
-        >
-          {/* Content Side */}
-          <div className="text-center lg:text-left space-y-8">
-            <motion.div variants={itemVariants} className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                <span className="block">
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background pt-16">
+      {/* Abstract Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(76,29,149,0.1),transparent_50%)]" />
+        <div className="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] rounded-full bg-primary/5 blur-[100px]" />
+        <div className="absolute bottom-[10%] left-[10%] w-[300px] h-[300px] rounded-full bg-indigo-500/5 blur-[80px]" />
+
+        {/* Simple Grid Overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage: `linear-gradient(to right, #808080 1px, transparent 1px), linear-gradient(to bottom, #808080 1px, transparent 1px)`,
+            backgroundSize: '24px 24px'
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
+
+          {/* Text Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex-1 space-y-8 text-center lg:text-left"
+          >
+            <div className="space-y-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-sm font-medium"
+              >
+                <Terminal className="w-4 h-4 mr-2" />
+                Available for hire
+              </motion.div>
+
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-foreground">
+                <span className="block text-foreground/80 text-3xl sm:text-4xl lg:text-5xl mb-2 font-normal">
+                  Hello, I&apos;m
+                </span>
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground to-muted-foreground">
                   {personalInfo.name.split(" ").slice(0, 2).join(" ")}
                 </span>
-                <span className="block text-3xl sm:text-4xl lg:text-5xl text-muted-foreground mt-2">
-                  {personalInfo.name.split(" ").slice(2).join(" ")}
-                </span>
               </h1>
-              <div className="w-24 h-1 bg-gradient-to-r from-primary to-primary mx-auto lg:mx-0 rounded-full"></div>
-            </motion.div>
 
-            <motion.p
-              variants={itemVariants}
-              className="text-xl sm:text-2xl text-muted-foreground font-medium"
-            >
-              {personalInfo.title}
-            </motion.p>
+              <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+                {personalInfo.title} based in <span className="text-foreground font-medium">{personalInfo.location}</span>.
+                Crafting robust and scalable digital experiences.
+              </p>
+            </div>
 
             <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap justify-center lg:justify-start gap-6 text-muted-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-4"
             >
-              <div className="flex items-center space-x-2">
-                <MapPin className="w-5 h-5 text-primary" />
-                <span className="text-sm sm:text-base">
-                  {personalInfo.location}
-                </span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Phone className="w-5 h-5 text-primary" />
-                <span className="text-sm sm:text-base">
-                  {personalInfo.phone}
-                </span>
-              </div>
-            </motion.div>
-
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap justify-center lg:justify-start gap-4"
-            >
-              <Button
-                asChild
-                size="lg"
-                className="shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-              >
-                <a href={`mailto:${personalInfo.email}`}>
-                  <Mail className="w-5 h-5 mr-2" />
+              <Button size="lg" className="h-12 px-8 text-base shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300" asChild>
+                <a href="#contact">
                   {content.nav.contact}
                 </a>
               </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-              >
-                <a
-                  href={`https://${personalInfo.linkedin}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              <Button size="lg" variant="outline" className="h-12 px-8 text-base border-muted-foreground/20 hover:bg-muted/50" asChild>
+                <a href={`https://${personalInfo.linkedin}`} target="_blank" rel="noopener noreferrer">
                   <Linkedin className="w-5 h-5 mr-2" />
                   LinkedIn
                 </a>
               </Button>
             </motion.div>
-          </div>
 
-          {/* Image Side */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="flex items-center justify-center lg:justify-start gap-6 text-muted-foreground pt-4"
+            >
+               <a href={`mailto:${personalInfo.email}`} className="hover:text-primary transition-colors">
+                  <Mail className="w-6 h-6" />
+               </a>
+               <a href={`https://${personalInfo.linkedin}`} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                  <Linkedin className="w-6 h-6" />
+               </a>
+               {/* Assuming Github link might be added later, keeping structure ready */}
+               <div className="h-px w-12 bg-border hidden lg:block" />
+               <span className="text-sm hidden lg:block">Open for opportunities</span>
+            </motion.div>
+          </motion.div>
+
+          {/* Visual Element / "Image" */}
           <motion.div
-            variants={imageVariants}
-            className="flex justify-center lg:justify-end"
+            initial={{ opacity: 0, scale: 0.8, rotate: 12 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="relative hidden lg:block w-[400px] h-[400px]"
           >
-            <div className="relative">
-              {/* Decorative Background Elements */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/20 rounded-2xl transform rotate-6"></div>
-              <div className="absolute -inset-2 bg-gradient-to-r from-primary/30 to-primary/30 rounded-2xl transform -rotate-3"></div>
+             {/* Abstract Geometric Composition instead of generic photo placeholder */}
+             <div className="absolute inset-0 bg-gradient-to-br from-primary to-purple-600 rounded-[2rem] rotate-6 opacity-20 blur-2xl" />
+             <div className="absolute inset-0 bg-card border border-border rounded-[2rem] shadow-2xl flex items-center justify-center overflow-hidden">
+                <div
+                  className="absolute inset-0 opacity-[0.05]"
+                  style={{
+                    backgroundImage: `linear-gradient(to right, #808080 1px, transparent 1px), linear-gradient(to bottom, #808080 1px, transparent 1px)`,
+                    backgroundSize: '24px 24px'
+                  }}
+                />
 
-              {/* Image Container */}
-              <div className="relative w-80 h-80 sm:w-96 sm:h-96 lg:w-[28rem] lg:h-[28rem]">
-                <div className="w-full h-full bg-gradient-to-br from-muted to-muted/80 rounded-2xl shadow-2xl overflow-hidden border-4 border-background">
-                  {/* Elegant placeholder with professional pattern */}
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-background via-muted/50 to-muted relative">
-                    {/* Pattern overlay */}
-                    <div className="absolute inset-0 opacity-10">
-                      <svg
-                        width="100%"
-                        height="100%"
-                        viewBox="0 0 100 100"
-                        className="w-full h-full"
-                      >
-                        <defs>
-                          <pattern
-                            id="grid"
-                            width="10"
-                            height="10"
-                            patternUnits="userSpaceOnUse"
-                          >
-                            <path
-                              d="M 10 0 L 0 0 0 10"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="0.5"
-                            />
-                          </pattern>
-                        </defs>
-                        <rect
-                          width="100%"
-                          height="100%"
-                          fill="url(#grid)"
-                          className="text-primary"
-                        />
-                      </svg>
+                <div className="relative z-10 text-center p-8">
+                  <div className="w-24 h-24 bg-primary/10 rounded-2xl mx-auto mb-6 flex items-center justify-center text-primary rotate-3 hover:rotate-0 transition-transform duration-500">
+                    <Code2 className="w-12 h-12" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-2">Full Stack<br/>Engineering</h3>
+                  <p className="text-muted-foreground text-sm">Vue.js • Nuxt • React • Node.js</p>
+
+                  <div className="mt-8 grid grid-cols-2 gap-4">
+                    <div className="bg-muted/50 p-3 rounded-xl border border-border/50">
+                      <div className="text-2xl font-bold text-primary">4+</div>
+                      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Years Exp</div>
                     </div>
-
-                    {/* Professional icon */}
-                    <div className="relative z-10 flex flex-col items-center justify-center text-muted-foreground/60">
-                      <svg
-                        className="w-32 h-32 mb-4"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <p className="text-muted-foreground font-medium text-lg">
-                        Professional Photo
-                      </p>
-                      <p className="text-muted-foreground/80 text-sm mt-1">
-                        Replace with your image
-                      </p>
+                     <div className="bg-muted/50 p-3 rounded-xl border border-border/50">
+                      <div className="text-2xl font-bold text-primary">10+</div>
+                      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Projects</div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+             </div>
           </motion.div>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="flex flex-col items-center space-y-2 text-muted-foreground"
-          >
-            <span className="text-sm font-medium">Scroll Down</span>
-            <ChevronDown className="w-6 h-6" />
-          </motion.div>
-        </motion.div>
+        </div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 1, repeat: Infinity, repeatType: "reverse" }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground/50"
+      >
+        <ChevronDown className="w-8 h-8" />
+      </motion.div>
     </section>
   );
 };
+
+function Code2(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="16 18 22 12 16 6" />
+      <polyline points="8 6 2 12 8 18" />
+    </svg>
+  )
+}
 
 export default Hero;
